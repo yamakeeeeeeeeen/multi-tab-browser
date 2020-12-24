@@ -17,6 +17,7 @@ app.on("ready", async () => {
     webPreferences: {
       nodeIntegration: false,
       preload: join(__dirname, "preload.js"),
+      webviewTag: true,
     },
   });
 
