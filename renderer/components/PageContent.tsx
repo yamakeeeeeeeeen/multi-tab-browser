@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Box, Button } from '@chakra-ui/react';
 import { WebviewTag } from 'electron';
@@ -42,6 +42,14 @@ export const PageContent: FC<Props> = ({ pageData, index }) => {
     },
     [webView],
   );
+
+  useEffect(() => {
+    if (webView) {
+      webView.addEventListener('did-fail-load', () => {
+        setUrl('/404');
+      });
+    }
+  }, [webView]);
 
   return (
     <Box h="100%">
