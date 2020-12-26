@@ -33,8 +33,8 @@ const IndexPage: FC = () => {
       <FormProvider {...methods}>
         <Flex h="100%">
           {fields.map((page, index) => (
-            <Box w={1 / fields.length}>
-              <PageContent key={page.id} pageData={page} index={index} />
+            <Box key={page.id} w={1 / fields.length}>
+              <PageContent pageData={page} index={index} />
             </Box>
           ))}
         </Flex>
