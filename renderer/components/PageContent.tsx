@@ -23,19 +23,25 @@ export const PageContent: FC<Props> = ({ pageData, index }) => {
     setUrl(getValues(`Pages[${index}].Url`));
   };
 
-  const BrowserRouteOperation = useCallback((operate: 'back' | 'forward') => {
-    const webView = document.getElementById(`webview-${index}`) as WebviewTag;
-    switch (operate) {
-      case 'back':
-        webView.goBack();
-        break;
-      case 'forward':
-        webView.goForward();
-        break;
-      default:
-        break;
-    }
-  }, []);
+  const webView = process.browser && (document.getElementById(`webview-${index}`) as WebviewTag);
+
+  const BrowserRouteOperation = useCallback(
+    (operate: 'back' | 'forward') => {
+      if (webView) {
+        switch (operate) {
+          case 'back':
+            webView.goBack();
+            break;
+          case 'forward':
+            webView.goForward();
+            break;
+          default:
+            break;
+        }
+      }
+    },
+    [webView],
+  );
 
   return (
     <Box h="100%">
