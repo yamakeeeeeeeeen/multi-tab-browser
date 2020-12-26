@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { FormProvider, useForm, useFieldArray } from 'react-hook-form';
 import { Box, Flex } from '@chakra-ui/react';
-import { PageContent } from '~/components/PageContent';
+import { PageContent } from '~/components/PageContent/PageContent';
 import { ArrayElement } from '~/types/ArrayElement';
 
 const initialUrl = 'https://google.com/';
