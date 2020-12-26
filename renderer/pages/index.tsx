@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { FormProvider, useForm, useFieldArray } from 'react-hook-form';
 import { Box, Flex } from '@chakra-ui/react';
 import { PageContent } from '~/components/PageContent';
@@ -21,12 +21,6 @@ const IndexPage: FC = () => {
     control: methods.control,
     name: 'Pages',
   });
-
-  const data = methods.getValues();
-  useEffect(() => {
-    console.log('data', data);
-    console.log('fields', fields);
-  }, [data]);
 
   return (
     <div style={{ height: '100vh' }}>
