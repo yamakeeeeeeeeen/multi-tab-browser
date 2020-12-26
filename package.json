@@ -2,7 +2,7 @@
   "name": "multi-tab-browser",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "renderer/main/index.js",
+  "main": "main/index.js",
   "productName": "multi tab browser",
   "scripts": {
     "build": "yarn build-renderer && yarn build-electron",

@@ -34,7 +34,7 @@ yarn-error.log*
 .vercel
 
 # electron
-../get-work-hours/dist
+dist
 renderer/.next
 renderer/out
 
