@@ -1,6 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Box, Button } from '@chakra-ui/react';
+import { WebviewTag } from 'electron';
 import { UrlForm } from '~/components/UrlForm';
 import { Inputs, Page } from '~/pages';
 
@@ -23,20 +24,16 @@ export const PageContent: FC<Props> = ({ pageData, index }) => {
   };
 
   const BrowserRouteOperation = useCallback((operate: 'back' | 'forward') => {
-    const webView = document.getElementById(`webview-${index}`);
+    const webView = document.getElementById(`webview-${index}`) as WebviewTag;
     switch (operate) {
       case 'back':
-        // @ts-ignore
-        webView?.goBack();
-        console.log({ webView });
+        webView.goBack();
         break;
       case 'forward':
-        console.log({ webView });
-        // @ts-ignore
-        webView?.goForward();
+        webView.goForward();
         break;
       default:
-        return;
+        break;
     }
   }, []);
 
