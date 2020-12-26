@@ -63,6 +63,9 @@ export const PageContent: FC<Props> = memo(({ pageData, index }) => {
   const { url: urlValidate } = useValidation();
   const { errors, handleSubmit, register, setValue, getValues } = useFormContext<Inputs>();
   const errorMessage = errors?.Pages?.[index]?.Url?.message;
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const webView = process.browser && (document.getElementById(`webview-${index}`) as WebviewTag);
 
   const search = useCallback(
