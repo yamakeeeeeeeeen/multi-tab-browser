@@ -1,9 +1,9 @@
 import { FC, memo, useCallback, useEffect, useState } from 'react';
 import { useFormContext, UseFormMethods } from 'react-hook-form';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Input } from '@chakra-ui/react';
 import { WebviewTag } from 'electron';
-import { UrlForm } from '~/components/UrlForm';
 import { Inputs, Page } from '~/pages';
+import { useValidation, UseValidationMethods } from '~/hooks/useValidation';
 
 type UrlState = string | undefined;
 
@@ -16,6 +16,7 @@ type ComponentProps = Pick<Props, 'index'> & {
   errorMessage: string | undefined;
   BrowserRouteOperation: (operate: 'back' | 'forward') => void;
   search: (formValues: Inputs) => void;
+  urlValidate: UseValidationMethods['url'];
   handleSubmit: UseFormMethods<Inputs>['handleSubmit'];
   register: UseFormMethods<Inputs>['register'];
 };
@@ -29,12 +30,24 @@ const Component: FC<ComponentProps> = ({
   BrowserRouteOperation,
   search,
   index,
+  urlValidate,
   handleSubmit,
   register,
 }) => (
   <Box h="100%">
     <form onSubmit={handleSubmit(search)} style={{ height: formHeight }}>
-      {url !== undefined && <UrlForm {...{ register, index }} value={url} />}
+      {url !== undefined && (
+        <Input
+          name={`Pages[${index}].Url`}
+          defaultValue={url}
+          placeholder="URL"
+          ref={register({
+            validate: {
+              ...urlValidate(),
+            },
+          })}
+        />
+      )}
       {errorMessage && <p>{errorMessage}</p>}
       <Button onClick={() => BrowserRouteOperation('back')}>◀</Button>
       <Button onClick={() => BrowserRouteOperation('forward')}>▶</Button>
@@ -47,6 +60,7 @@ const Component: FC<ComponentProps> = ({
 
 export const PageContent: FC<Props> = memo(({ pageData, index }) => {
   const [url, setUrl] = useState<UrlState>(pageData.Url);
+  const { url: urlValidate } = useValidation();
   const { errors, handleSubmit, register, setValue, getValues } = useFormContext<Inputs>();
   const errorMessage = errors?.Pages?.[index]?.Url?.message;
   const webView = process.browser && (document.getElementById(`webview-${index}`) as WebviewTag);
@@ -84,7 +98,9 @@ export const PageContent: FC<Props> = memo(({ pageData, index }) => {
     }
   }, [webView]);
 
-  return <Component {...{ url, errorMessage, BrowserRouteOperation, search, index, handleSubmit, register }} />;
+  return (
+    <Component {...{ url, errorMessage, BrowserRouteOperation, search, index, urlValidate, handleSubmit, register }} />
+  );
 });
 
 PageContent.displayName = 'PageContent';
