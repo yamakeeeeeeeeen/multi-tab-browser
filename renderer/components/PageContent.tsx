@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormErrorMessage, Input } from '@chakra-ui/react'
+import { Box, Button, Flex, FormControl, FormErrorMessage, Input } from '@chakra-ui/react'
 import type { WebviewTag } from 'electron'
 import type { FC } from 'react'
 import { memo, useCallback, useEffect, useState } from 'react'
@@ -25,8 +25,8 @@ type ComponentProps = Pick<Props, 'index'> & {
   register: UseFormRegister<Inputs>
 }
 
-const formHeight = '80px'
-const webViewWrapperHeight = `calc(90% - ${formHeight})`
+const formHeight = '40px'
+const webViewWrapperHeight = `calc(100% - ${formHeight})`
 
 const Component: FC<ComponentProps> = ({
   url,
@@ -40,21 +40,23 @@ const Component: FC<ComponentProps> = ({
 }) => (
   <Box h="100%">
     {url !== undefined && (
-      <FormControl as="form" onSubmit={handleSubmit(search)} isInvalid={!!errorMessage}>
-        <Input
-          defaultValue={url}
-          placeholder="URL"
-          {...register(`Pages.${index}.Url` as const, {
-            validate: {
-              ...urlValidate(),
-            },
-          })}
-        />
-        <FormErrorMessage>{errorMessage}</FormErrorMessage>
-      </FormControl>
+      <Flex>
+        <Button onClick={() => BrowserRouteOperation('back')}>◀</Button>
+        <Button onClick={() => BrowserRouteOperation('forward')}>▶</Button>
+        <FormControl as="form" onSubmit={handleSubmit(search)} isInvalid={!!errorMessage}>
+          <Input
+            defaultValue={url}
+            placeholder="URL"
+            {...register(`Pages.${index}.Url` as const, {
+              validate: {
+                ...urlValidate(),
+              },
+            })}
+          />
+          <FormErrorMessage>{errorMessage}</FormErrorMessage>
+        </FormControl>
+      </Flex>
     )}
-    <Button onClick={() => BrowserRouteOperation('back')}>◀</Button>
-    <Button onClick={() => BrowserRouteOperation('forward')}>▶</Button>
     <Box style={{ height: webViewWrapperHeight }}>
       <webview id={`webview-${index}`} src={url} style={{ height: '100%' }} />
     </Box>
