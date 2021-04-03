@@ -1,1 +1,1 @@
-export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType[number];
+export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType[number]

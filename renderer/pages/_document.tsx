@@ -1,6 +1,7 @@
-import React from 'react';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document'
+import React from 'react'
 
+// eslint-disable-next-line import/no-default-export
 export default class MyDocument extends Document {
   render() {
     return (
@@ -14,6 +15,6 @@ export default class MyDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    );
+    )
   }
 }

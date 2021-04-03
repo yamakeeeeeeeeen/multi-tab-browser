@@ -1,26 +1,27 @@
-import { FC } from 'react';
-import { FormProvider, useForm, useFieldArray } from 'react-hook-form';
-import { Box, Flex } from '@chakra-ui/react';
-import { PageContent } from '~/components/PageContent';
-import { ArrayElement } from '~/types/ArrayElement';
+import { Box, Flex } from '@chakra-ui/react'
+import type { FC } from 'react'
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 
-const initialUrl = 'https://google.com/';
+import { PageContent } from '~/components/PageContent'
+import type { ArrayElement } from '~/types/ArrayElement'
+
+const initialUrl = 'https://google.com/'
 
 export type Inputs = {
-  Pages: { Url: string }[];
-};
-export type Page = ArrayElement<Inputs['Pages']>;
+  Pages: { Url: string }[]
+}
+export type Page = ArrayElement<Inputs['Pages']>
 
 const IndexPage: FC = () => {
   const methods = useForm<Inputs>({
     defaultValues: {
       Pages: [{ Url: initialUrl }, { Url: initialUrl }],
     },
-  });
+  })
   const { fields } = useFieldArray<Inputs>({
     control: methods.control,
     name: 'Pages',
-  });
+  })
 
   return (
     <div style={{ height: '100vh' }}>
@@ -34,7 +35,8 @@ const IndexPage: FC = () => {
         </Flex>
       </FormProvider>
     </div>
-  );
-};
+  )
+}
 
-export default IndexPage;
+// eslint-disable-next-line import/no-default-export
+export default IndexPage

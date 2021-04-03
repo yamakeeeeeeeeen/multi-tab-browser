@@ -1,28 +1,32 @@
-import { FC, memo, useCallback, useEffect, useState } from 'react';
-import { useFormContext, UseFormHandleSubmit, UseFormRegister } from 'react-hook-form';
-import { Box, Button, FormControl, FormErrorMessage, Input } from '@chakra-ui/react';
-import { WebviewTag } from 'electron';
-import { Inputs, Page } from '~/pages';
-import { useValidation, UseValidationMethods } from '~/hooks/useValidation';
+import { Box, Button, FormControl, FormErrorMessage, Input } from '@chakra-ui/react'
+import type { WebviewTag } from 'electron'
+import type { FC } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
+import type { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 
-type UrlState = string | undefined;
+import type { UseValidationMethods } from '~/hooks/useValidation'
+import { useValidation } from '~/hooks/useValidation'
+import type { Inputs, Page } from '~/pages'
+
+type UrlState = string | undefined
 
 type Props = {
-  pageData: Partial<Page & Record<'id', string>>;
-  index: number;
-};
+  pageData: Partial<Page & Record<'id', string>>
+  index: number
+}
 type ComponentProps = Pick<Props, 'index'> & {
-  url: UrlState;
-  errorMessage: string | undefined;
-  BrowserRouteOperation: (operate: 'back' | 'forward') => void;
-  search: (formValues: Inputs) => void;
-  urlValidate: UseValidationMethods['url'];
-  handleSubmit: UseFormHandleSubmit<Inputs>;
-  register: UseFormRegister<Inputs>;
-};
+  url: UrlState
+  errorMessage: string | undefined
+  BrowserRouteOperation: (operate: 'back' | 'forward') => void
+  search: (formValues: Inputs) => void
+  urlValidate: UseValidationMethods['url']
+  handleSubmit: UseFormHandleSubmit<Inputs>
+  register: UseFormRegister<Inputs>
+}
 
-const formHeight = '80px';
-const webViewWrapperHeight = `calc(90% - ${formHeight})`;
+const formHeight = '80px'
+const webViewWrapperHeight = `calc(90% - ${formHeight})`
 
 const Component: FC<ComponentProps> = ({
   url,
@@ -55,60 +59,71 @@ const Component: FC<ComponentProps> = ({
       <webview id={`webview-${index}`} src={url} style={{ height: '100%' }} />
     </Box>
   </Box>
-);
+)
 
 export const PageContent: FC<Props> = memo(({ pageData, index }) => {
-  const [url, setUrl] = useState<UrlState>(pageData.Url);
-  const { url: urlValidate } = useValidation();
+  const [url, setUrl] = useState<UrlState>(pageData.Url)
+  const { url: urlValidate } = useValidation()
   const {
     formState: { errors },
     handleSubmit,
     register,
     setValue,
     getValues,
-  } = useFormContext<Inputs>();
-  const errorMessage = errors?.Pages?.[index]?.Url?.message;
+  } = useFormContext<Inputs>()
+  const errorMessage = errors?.Pages?.[index]?.Url?.message
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const webView = process.browser && (document.getElementById(`webview-${index}`) as WebviewTag);
+  const webView = process.browser && (document.getElementById(`webview-${index}`) as WebviewTag)
 
   const search = useCallback(
     (formValues: Inputs) => {
-      setValue(`Pages.${index}.Url` as `Pages.0.Url`, formValues.Pages[index].Url);
-      setUrl(getValues(`Pages.${index}.Url` as const));
+      setValue(`Pages.${index}.Url` as `Pages.0.Url`, formValues.Pages[index].Url)
+      setUrl(getValues(`Pages.${index}.Url` as const))
     },
-    [getValues, index, setValue],
-  );
+    [getValues, index, setValue]
+  )
   const BrowserRouteOperation = useCallback(
     (operate: 'back' | 'forward') => {
       if (webView) {
         switch (operate) {
           case 'back':
-            webView.goBack();
-            break;
+            webView.goBack()
+            break
           case 'forward':
-            webView.goForward();
-            break;
+            webView.goForward()
+            break
           default:
-            break;
+            break
         }
       }
     },
-    [webView],
-  );
+    [webView]
+  )
 
   useEffect(() => {
     if (webView) {
       webView.addEventListener('did-fail-load', () => {
-        setUrl('/404');
-      });
+        setUrl('/404')
+      })
     }
-  }, [webView]);
+  }, [webView])
 
   return (
-    <Component {...{ url, errorMessage, BrowserRouteOperation, search, index, urlValidate, handleSubmit, register }} />
-  );
-});
+    <Component
+      {...{
+        url,
+        errorMessage,
+        BrowserRouteOperation,
+        search,
+        index,
+        urlValidate,
+        handleSubmit,
+        register,
+      }}
+    />
+  )
+})
 
-PageContent.displayName = 'PageContent';
+PageContent.displayName = 'PageContent'

@@ -1,5 +1,5 @@
-import { AppProps } from 'next/app';
-import { ChakraProvider, CSSReset } from '@chakra-ui/react';
+import { ChakraProvider, CSSReset } from '@chakra-ui/react'
+import type { AppProps } from 'next/app'
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -7,7 +7,8 @@ const App = ({ Component, pageProps }: AppProps) => {
       <CSSReset />
       <Component {...pageProps} />
     </ChakraProvider>
-  );
-};
+  )
+}
 
-export default App;
+// eslint-disable-next-line import/no-default-export
+export default App
