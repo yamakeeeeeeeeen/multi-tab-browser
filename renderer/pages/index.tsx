@@ -17,7 +17,7 @@ const IndexPage: FC = () => {
       Pages: [{ Url: initialUrl }, { Url: initialUrl }],
     },
   });
-  const { fields } = useFieldArray<Page>({
+  const { fields } = useFieldArray<Inputs>({
     control: methods.control,
     name: 'Pages',
   });

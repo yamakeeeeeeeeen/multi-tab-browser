@@ -1,5 +1,5 @@
 import { FC, memo, useCallback, useEffect, useState } from 'react';
-import { useFormContext, UseFormMethods } from 'react-hook-form';
+import { useFormContext, UseFormHandleSubmit, UseFormRegister } from 'react-hook-form';
 import { Box, Button, FormControl, FormErrorMessage, Input } from '@chakra-ui/react';
 import { WebviewTag } from 'electron';
 import { Inputs, Page } from '~/pages';
@@ -17,8 +17,8 @@ type ComponentProps = Pick<Props, 'index'> & {
   BrowserRouteOperation: (operate: 'back' | 'forward') => void;
   search: (formValues: Inputs) => void;
   urlValidate: UseValidationMethods['url'];
-  handleSubmit: UseFormMethods<Inputs>['handleSubmit'];
-  register: UseFormMethods<Inputs>['register'];
+  handleSubmit: UseFormHandleSubmit<Inputs>;
+  register: UseFormRegister<Inputs>;
 };
 
 const formHeight = '80px';
@@ -38,10 +38,9 @@ const Component: FC<ComponentProps> = ({
     {url !== undefined && (
       <FormControl as="form" onSubmit={handleSubmit(search)} isInvalid={!!errorMessage}>
         <Input
-          name={`Pages[${index}].Url`}
           defaultValue={url}
           placeholder="URL"
-          ref={register({
+          {...register(`Pages.${index}.Url` as const, {
             validate: {
               ...urlValidate(),
             },
@@ -61,7 +60,13 @@ const Component: FC<ComponentProps> = ({
 export const PageContent: FC<Props> = memo(({ pageData, index }) => {
   const [url, setUrl] = useState<UrlState>(pageData.Url);
   const { url: urlValidate } = useValidation();
-  const { errors, handleSubmit, register, setValue, getValues } = useFormContext<Inputs>();
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+    setValue,
+    getValues,
+  } = useFormContext<Inputs>();
   const errorMessage = errors?.Pages?.[index]?.Url?.message;
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -70,8 +75,8 @@ export const PageContent: FC<Props> = memo(({ pageData, index }) => {
 
   const search = useCallback(
     (formValues: Inputs) => {
-      setValue('Pages[index].Url', formValues.Pages[index].Url);
-      setUrl(getValues(`Pages[${index}].Url`));
+      setValue(`Pages.${index}.Url` as `Pages.0.Url`, formValues.Pages[index].Url);
+      setUrl(getValues(`Pages.${index}.Url` as const));
     },
     [getValues, index, setValue],
   );
