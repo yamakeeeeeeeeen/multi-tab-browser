@@ -1,5 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react'
 import type { NextPage } from 'next'
+import { useMemo } from 'react'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 
 import { PageContent } from '~/components/PageContent'
@@ -22,12 +23,14 @@ const IndexPage: NextPage = () => {
     name: 'Pages',
   })
 
+  const pageWidth = useMemo(() => 1 / fields.length, [fields.length])
+
   return (
     <div style={{ height: '100vh' }}>
       <FormProvider {...methods}>
         <Flex h="100%">
           {fields.map((page, index) => (
-            <Box key={page.id} w={1 / fields.length}>
+            <Box key={page.id} w={pageWidth}>
               <PageContent pageData={page} index={index} />
             </Box>
           ))}
