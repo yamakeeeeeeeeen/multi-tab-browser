@@ -88,17 +88,15 @@ export const PageContent: VFC<Props> = memo(({ pageData, index }) => {
   )
   const BrowserRouteOperation = useCallback(
     (operate: 'back' | 'forward') => {
-      if (webView) {
-        switch (operate) {
-          case 'back':
-            webView.goBack()
-            break
-          case 'forward':
-            webView.goForward()
-            break
-          default:
-            break
-        }
+      if (!webView) return
+
+      switch (operate) {
+        case 'back':
+          webView.goBack()
+          break
+        case 'forward':
+          webView.goForward()
+          break
       }
     },
     [webView]
