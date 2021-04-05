@@ -3,9 +3,8 @@ import type { FC } from 'react'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 
 import { PageContent } from '~/components/PageContent'
+import { INITIAL_URL } from '~/constants'
 import type { ArrayElement } from '~/types/ArrayElement'
-
-const initialUrl = 'https://google.com/'
 
 export type Inputs = {
   Pages: { Url: string }[]
@@ -15,7 +14,7 @@ export type Page = ArrayElement<Inputs['Pages']>
 const IndexPage: FC = () => {
   const methods = useForm<Inputs>({
     defaultValues: {
-      Pages: [{ Url: initialUrl }, { Url: initialUrl }],
+      Pages: [{ Url: INITIAL_URL }, { Url: INITIAL_URL }],
     },
   })
   const { fields } = useFieldArray<Inputs>({
