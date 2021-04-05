@@ -1,5 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react'
-import type { FC } from 'react'
+import type { NextPage } from 'next'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 
 import { PageContent } from '~/components/PageContent'
@@ -11,7 +11,7 @@ export type Inputs = {
 }
 export type Page = ArrayElement<Inputs['Pages']>
 
-const IndexPage: FC = () => {
+const IndexPage: NextPage = () => {
   const methods = useForm<Inputs>({
     defaultValues: {
       Pages: [{ Url: INITIAL_URL }, { Url: INITIAL_URL }],

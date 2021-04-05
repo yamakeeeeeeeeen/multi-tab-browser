@@ -1,6 +1,6 @@
 import { Box, Button, Flex, FormControl, FormErrorMessage, Input } from '@chakra-ui/react'
 import type { WebviewTag } from 'electron'
-import type { FC } from 'react'
+import type { VFC } from 'react'
 import { memo, useCallback, useEffect, useState } from 'react'
 import type { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
@@ -28,7 +28,7 @@ type ComponentProps = Pick<Props, 'index'> & {
 const formHeight = '40px'
 const webViewWrapperHeight = `calc(100% - ${formHeight})`
 
-const Component: FC<ComponentProps> = ({
+const Component: VFC<ComponentProps> = ({
   url,
   errorMessage,
   BrowserRouteOperation,
@@ -63,7 +63,7 @@ const Component: FC<ComponentProps> = ({
   </Box>
 )
 
-export const PageContent: FC<Props> = memo(({ pageData, index }) => {
+export const PageContent: VFC<Props> = memo(({ pageData, index }) => {
   const [url, setUrl] = useState<UrlState>(pageData.Url)
   const { url: urlValidate } = useValidation()
   const {
