@@ -77,7 +77,20 @@ export const PageContent: VFC<Props> = memo(({ pageData, index }) => {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const webView = process.browser && (document.getElementById(`webview-${index}`) as WebviewTag)
+  const webView: WebviewTag = process.browser && document.getElementById(`webview-${index}`)
+
+  const [test, setTest] = useState('')
+  useEffect(() => {
+    if (!webView) return
+    webView.addEventListener('dom-ready', (_event) => {
+      const foo = webView.getURL()
+      console.log('foo', foo)
+      setTest(foo)
+    })
+  }, [webView])
+  useEffect(() => {
+    console.log('test', test)
+  }, [test])
 
   const search = useCallback(
     (formValues: Inputs) => {
