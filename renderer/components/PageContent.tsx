@@ -105,8 +105,9 @@ export const PageContent: VFC<Props> = memo(({ pageData, index }) => {
   useEffect(() => {
     if (!webView) return
     webView.addEventListener('dom-ready', (_event) => {
-      // FIXME: setUrl時のエラー解消
-      setUrl(webView.getURL())
+      if (typeof window !== 'undefined') {
+        setUrl(webView.getURL())
+      }
     })
   }, [webView])
   useEffect(() => {
