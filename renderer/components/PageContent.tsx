@@ -45,7 +45,7 @@ const Component: VFC<ComponentProps> = ({
         <Button onClick={() => BrowserRouteOperation('forward')}>▶</Button>
         <FormControl as="form" onSubmit={handleSubmit(search)} isInvalid={!!errorMessage}>
           <Input
-            defaultValue={url}
+            value={url}
             placeholder="URL"
             {...register(`Pages.${index}.Url` as const, {
               validate: {
@@ -79,19 +79,6 @@ export const PageContent: VFC<Props> = memo(({ pageData, index }) => {
   // @ts-ignore
   const webView: WebviewTag = process.browser && document.getElementById(`webview-${index}`)
 
-  const [test, setTest] = useState('')
-  useEffect(() => {
-    if (!webView) return
-    webView.addEventListener('dom-ready', (_event) => {
-      const foo = webView.getURL()
-      console.log('foo', foo)
-      setTest(foo)
-    })
-  }, [webView])
-  useEffect(() => {
-    console.log('test', test)
-  }, [test])
-
   const search = useCallback(
     (formValues: Inputs) => {
       setValue(`Pages.${index}.Url` as `Pages.0.Url`, formValues.Pages[index].Url)
@@ -115,6 +102,13 @@ export const PageContent: VFC<Props> = memo(({ pageData, index }) => {
     [webView]
   )
 
+  useEffect(() => {
+    if (!webView) return
+    webView.addEventListener('dom-ready', (_event) => {
+      // FIXME: setUrl時のエラー解消
+      setUrl(webView.getURL())
+    })
+  }, [webView])
   useEffect(() => {
     if (webView) {
       webView.addEventListener('did-fail-load', () => {
