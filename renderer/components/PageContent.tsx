@@ -106,6 +106,7 @@ export const PageContent: VFC<Props> = memo(({ pageData, index }) => {
     if (!webView) return
     webView.addEventListener('dom-ready', (_event) => {
       if (typeof window !== 'undefined') {
+        // FIXME: 実行時に重くなる修正をする
         setUrl(webView.getURL())
       }
     })
