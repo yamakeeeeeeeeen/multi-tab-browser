@@ -104,9 +104,8 @@ export const PageContent: VFC<Props> = memo(({ pageData, index }) => {
 
   useEffect(() => {
     if (!webView) return
-    webView.addEventListener('dom-ready', (_event) => {
+    webView.addEventListener('did-navigate-in-page', (_event) => {
       if (typeof window !== 'undefined') {
-        // FIXME: 実行時に重くなる修正をする
         setUrl(webView.getURL())
       }
     })
