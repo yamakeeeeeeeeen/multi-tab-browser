@@ -64,6 +64,7 @@ const Component: VFC<ComponentProps> = ({
 )
 
 export const PageContent: VFC<Props> = memo(({ pageData, index }) => {
+  const [webView, setWebView] = useState<WebviewTag | null>(null)
   const [url, setUrl] = useState<UrlState>(pageData.Url)
   const { url: urlValidate } = useValidation()
   const {
@@ -74,10 +75,6 @@ export const PageContent: VFC<Props> = memo(({ pageData, index }) => {
     getValues,
   } = useFormContext<Inputs>()
   const errorMessage = errors?.Pages?.[index]?.Url?.message
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const webView: WebviewTag = process.browser && document.getElementById(`webview-${index}`)
 
   const search = useCallback(
     (formValues: Inputs) => {
@@ -102,6 +99,11 @@ export const PageContent: VFC<Props> = memo(({ pageData, index }) => {
     [webView]
   )
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setWebView(document.getElementById(`webview-${index}`) as WebviewTag | null)
+    }
+  }, [index])
   useEffect(() => {
     if (!webView) return
     webView.addEventListener('did-navigate-in-page', (_event) => {
