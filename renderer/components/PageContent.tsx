@@ -5,6 +5,7 @@ import { memo, useCallback, useEffect, useState } from 'react'
 import type { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 
+import { PROCESS_CLIENT } from '~/constants'
 import type { UseValidationMethods } from '~/hooks/useValidation'
 import { useValidation } from '~/hooks/useValidation'
 import type { Inputs, Page } from '~/pages'
@@ -100,14 +101,14 @@ export const PageContent: VFC<Props> = memo(({ pageData, index }) => {
   )
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (PROCESS_CLIENT) {
       setWebView(document.getElementById(`webview-${index}`) as WebviewTag | null)
     }
   }, [index])
   useEffect(() => {
     if (!webView) return
     webView.addEventListener('did-navigate-in-page', (_event) => {
-      if (typeof window !== 'undefined') {
+      if (PROCESS_CLIENT) {
         setUrl(webView.getURL())
       }
     })
